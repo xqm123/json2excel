@@ -15,13 +15,10 @@ func ReadFile(filePath string) ([]byte, error) {
 	}
 	defer f.Close()
 
-	//req := new(proto.CheckPolicyRequest)
-
 	js, err := ioutil.ReadAll(f)
 	if err != nil {
 		return []byte{}, err
 	}
-	//err = json.Unmarshal(js, req)
 
 	return js, err
 }
