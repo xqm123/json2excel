@@ -21,7 +21,7 @@
                         "errno":0,
                         "errmsg":"success",
                         "real_fee":0,
-                        "jsondetail":""
+                        "jsondetail":null
                     },
                     {
                         "fee":0,
@@ -29,6 +29,6 @@
                         "errno":0,
                         "errmsg":"success",
                         "real_fee":0,
-                        "jsondetail":""
+                        "jsondetail":null
                     }
                 ]

@@ -3,9 +3,8 @@ package logic
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
+	"json2excel/common"
 	"sort"
-	"strconv"
 	"time"
 
 	"github.com/360EntSecGroup-Skylar/excelize/v2"
@@ -45,7 +44,6 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 
 	sIndexX := "B"
 	eIndexX := string(byte(int(sIndexX[0]) + len(header) - 1))
-	fmt.Println("eIndexX:", eIndexX)
 	indexY := 2
 	sheetName := "Sheet1"
 
@@ -55,7 +53,7 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	}
 
 	//设置header行高
-	if err = f.SetRowHeight("Sheet1", indexY, 20); err != nil {
+	if err = f.SetRowHeight(sheetName, indexY, 20); err != nil {
 		return "", err
 	}
 
@@ -89,16 +87,7 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	for _, row := range jsonMap {
 		for i, vm := range header {
 			if val, ok := row[vm]; ok {
-				valRef := reflect.ValueOf(val)
-				if !valRef.IsValid() {
-					val = nil
-				} else if valRef.Kind() == reflect.Slice || valRef.Kind() == reflect.Array || valRef.Kind() == reflect.Map {
-					valjs, _ := json.Marshal(val)
-					val = string(valjs)
-				} else if valRef.Kind() == reflect.Bool {
-					val = strconv.FormatBool(val.(bool))
-				}
-				values[i] = val
+				values[i] = common.TransCellVal(val)
 			} else {
 				values[i] = nil
 			}
