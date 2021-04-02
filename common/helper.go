@@ -27,7 +27,7 @@ func TransCellVal(val interface{}) (v interface{}) {
 	valRef := reflect.ValueOf(val)
 	if !valRef.IsValid() {
 		v = nil
-	} else if valRef.Kind() == reflect.Slice || valRef.Kind() == reflect.Array || valRef.Kind() == reflect.Map {
+	} else if valRef.Kind() == reflect.Slice || valRef.Kind() == reflect.Array || valRef.Kind() == reflect.Map || valRef.Kind() == reflect.Struct || valRef.Kind() == reflect.Ptr {
 		valjs, _ := json.Marshal(val)
 		v = string(valjs)
 	} else if valRef.Kind() == reflect.Bool {
