@@ -30,7 +30,7 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	temp := map[string]struct{}{}
 
 	for _, v := range jsonMap {
-		for km, _ := range v {
+		for km := range v {
 			if _, ok := temp[km]; !ok {
 				temp[km] = struct{}{}
 				header = append(header, km)
@@ -75,6 +75,9 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	}
 
 	err = f.SetCellStyle(sheetName, fmt.Sprintf("%s%d", sIndexX, indexY), fmt.Sprintf("%s%d", eIndexX, indexY), headerStyle)
+	if err != nil {
+		return "", err
+	}
 
 	err = f.SetSheetRow(sheetName, fmt.Sprintf("%s%d", sIndexX, indexY), &header)
 	if err != nil {
