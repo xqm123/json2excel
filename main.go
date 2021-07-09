@@ -6,6 +6,7 @@ import (
 	"json2excel/logic"
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 func main() {
@@ -17,6 +18,14 @@ func main() {
 
 	workdir := filepath.Dir(os.Args[0])
 	reqFile := os.Args[1]
+
+	var err error
+	defer func() {
+		//如果发生了错误，则在程序结束前打印堆栈信息
+		if err != nil {
+			fmt.Println(stack())
+		}
+	}()
 
 	// 获取json文件数据
 	filePath := workdir + "/" + reqFile
@@ -35,4 +44,10 @@ func main() {
 	}
 
 	fmt.Println("Json2Excel success excelPath:", savePath)
+}
+
+// 获取堆栈信息
+func stack() string {
+	var buf [2 << 10]byte
+	return string(buf[:runtime.Stack(buf[:], true)])
 }
