@@ -20,7 +20,7 @@ func main() {
 	workdir := filepath.Dir(os.Args[0])
 	reqFile := os.Args[1]
 
-	log_path := workdir + "main.log"
+	log_path := workdir + "/main.log"
 	log.InitLogger(log_path, "info")
 	log.Infof("deal request start for command: %s", strings.Join(os.Args, " "))
 
