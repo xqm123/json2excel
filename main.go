@@ -7,6 +7,7 @@ import (
 	"json2excel/logic"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 
 	log_path := workdir + "main.log"
 	log.InitLogger(log_path, "info")
+	log.Infof("deal request start for command: %s", strings.Join(os.Args, " "))
 
 	// 获取json文件数据
 	filePath := workdir + "/" + reqFile
