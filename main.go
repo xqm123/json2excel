@@ -6,7 +6,7 @@ import (
 	"json2excel/logic"
 	"os"
 	"path/filepath"
-	"runtime"
+	"runtime/debug"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 	defer func() {
 		//如果发生了错误，则在程序结束前打印堆栈信息
 		if err != nil {
-			fmt.Println(stack())
+			debug.PrintStack()
 		}
 	}()
 
@@ -44,10 +44,4 @@ func main() {
 	}
 
 	fmt.Println("Json2Excel success excelPath:", savePath)
-}
-
-// 获取堆栈信息
-func stack() string {
-	var buf [2 << 10]byte
-	return string(buf[:runtime.Stack(buf[:], true)])
 }
