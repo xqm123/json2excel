@@ -46,7 +46,11 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	f := excelize.NewFile()
 
 	sIndexX := "B"
-	eIndexX := string(byte(int(sIndexX[0]) + len(header) - 1))
+	eIndexX, err := excelize.ColumnNumberToName(int(sIndexX[0]) + len(header) - int('A'))
+	if err != nil {
+		log.Errorf("excelize.ColumnNumberToName error. err: %s", err.Error())
+		return "", err
+	}
 	indexY := 2
 	sheetName := "Sheet1"
 
