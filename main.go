@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"json2excel/common"
+	"json2excel/log"
 	"json2excel/logic"
 	"os"
 	"path/filepath"
-	"runtime/debug"
 )
 
 func main() {
@@ -19,19 +19,15 @@ func main() {
 	workdir := filepath.Dir(os.Args[0])
 	reqFile := os.Args[1]
 
-	var err error
-	defer func() {
-		//如果发生了错误，则在程序结束前打印堆栈信息
-		if err != nil {
-			debug.PrintStack()
-		}
-	}()
+	log_path := workdir + "main.log"
+	log.InitLogger(log_path, "info")
 
 	// 获取json文件数据
 	filePath := workdir + "/" + reqFile
 	jsBytes, err := common.ReadFile(filePath)
 	if err != nil {
-		fmt.Println("ReadJsonFile err :", err)
+		log.Errorf("ReadJsonFile err: %s", err.Error())
+		fmt.Println("ReadJsonFile err: ", err)
 		return
 	}
 
@@ -39,9 +35,11 @@ func main() {
 
 	savePath, err := json2Excel.Json2Excel(jsBytes, workdir)
 	if err != nil {
-		fmt.Println("Json2Excel err:", err)
+		log.Errorf("Json2Excel err: %s", err.Error())
+		fmt.Println("Json2Excel err: ", err)
 		return
 	}
 
-	fmt.Println("Json2Excel success excelPath:", savePath)
+	log.Infof("Json2Excel success excelPath: %s", savePath)
+	fmt.Println("Json2Excel success excelPath: ", savePath)
 }

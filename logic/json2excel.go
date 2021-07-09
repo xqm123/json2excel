@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"json2excel/common"
+	"json2excel/log"
 	"sort"
 	"time"
 
@@ -20,9 +21,11 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 	jsonMap := make([]map[string]interface{}, 0)
 	err = json.Unmarshal(jsonBytes, &jsonMap)
 	if err != nil {
+		log.Errorf("json.Unmarshal error. err: %s", err.Error())
 		return "", err
 	}
 	if len(jsonMap) < 1 {
+		log.Error("json data count lt 1")
 		return "", fmt.Errorf("json data count lt 1")
 	}
 
@@ -49,11 +52,13 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 
 	//设置列宽
 	if err = f.SetColWidth(sheetName, sIndexX, eIndexX, 20); err != nil {
+		log.Errorf("f.SetColWidth error. err: %s", err.Error())
 		return "", err
 	}
 
 	//设置header行高
 	if err = f.SetRowHeight(sheetName, indexY, 20); err != nil {
+		log.Errorf("f.SetRowHeight error. err: %s", err.Error())
 		return "", err
 	}
 
@@ -76,11 +81,13 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 
 	err = f.SetCellStyle(sheetName, fmt.Sprintf("%s%d", sIndexX, indexY), fmt.Sprintf("%s%d", eIndexX, indexY), headerStyle)
 	if err != nil {
+		log.Errorf("f.SetCellStyle error. err: %s", err.Error())
 		return "", err
 	}
 
 	err = f.SetSheetRow(sheetName, fmt.Sprintf("%s%d", sIndexX, indexY), &header)
 	if err != nil {
+		log.Errorf("f.SetSheetRow error. err: %s", err.Error())
 		return "", err
 	}
 	indexY++
@@ -98,6 +105,7 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 
 		err = f.SetSheetRow(sheetName, fmt.Sprintf("%s%d", sIndexX, indexY), &values)
 		if err != nil {
+			log.Errorf("f.SetSheetRow error. err: %s", err.Error())
 			return "", err
 		}
 		indexY++
@@ -105,6 +113,7 @@ func (j *Json2Excel) Json2Excel(jsonBytes []byte, saveDir string) (savePath stri
 
 	savePath = fmt.Sprintf("%s/%s.xlsx", saveDir, time.Now().Format("20060102150405"))
 	if err := f.SaveAs(savePath); err != nil {
+		log.Errorf("f.SaveAs error. savePath: %s, err: %s", savePath, err.Error())
 		return "", err
 	}
 
