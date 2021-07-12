@@ -20,7 +20,7 @@ func ReadFile(filePath string) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	return js, err
+	return js, nil
 }
 
 func TransCellVal(val interface{}) (v interface{}) {
